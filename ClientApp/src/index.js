@@ -6,15 +6,26 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+import { Global, css } from '@emotion/react'
 import { ChakraProvider } from "@chakra-ui/react"
-import Home from './components/Home';
+import Home from './components/Home/Home';
 import Login from './components/Login';
+
+import "focus-visible/dist/focus-visible"
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
+const GlobalStyles = css`
+  .js-focus-visible :focus:not([data-focus-visible-added]) {
+     outline: none;
+     box-shadow: none;
+   }
+`;
+
 ReactDOM.render(
   <ChakraProvider>
+    <Global styles={GlobalStyles} />
     <BrowserRouter basename={baseUrl}>
       <Routes>
         <Route path='/' element={<App />}>

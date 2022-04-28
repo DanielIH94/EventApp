@@ -9,7 +9,7 @@ const Logo = () => {
   return (
     <Center p="10px">
       <HStack py="10px">
-        <Icon as={icon.app_logo} color="purple.500" fontSize="34px" />
+        <Icon as={icon.app_logo.fill} color="purple.500" fontSize="34px" />
         <Spacer />
         <Text fontWeight="light" fontSize="lg">
           EventNet

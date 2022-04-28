@@ -1,22 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
 import { ChakraProvider } from "@chakra-ui/react"
+import Home from './components/Home';
+import Login from './components/Login';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
-  </BrowserRouter>,
+  <ChakraProvider>
+    <BrowserRouter basename={baseUrl}>
+      <Routes>
+        <Route path='/' element={<App />}>
+          <Route index element={<Home />} />
+        </Route>
+        <Route path='login' element={<Login />} />
+        <Route path='*' element={<div>error 404 :c</div>}/>
+      </Routes>
+    </BrowserRouter>
+  </ChakraProvider>,
   rootElement
 );
 

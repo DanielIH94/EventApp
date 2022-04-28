@@ -19,18 +19,28 @@ const Logo = () => {
   )
 }
 
+const MenuButton = ({ icon, text, onClick }) => {
+  return (
+    <Button
+      color="gray.600"
+      leftIcon={<Icon as={icon} />}
+      onClick={onClick}
+      _active={{
+        background: "orange",
+        color: "white"
+      }}
+    >
+      {text}
+    </Button>
+  )
+}
+
 const Menu = () => {
   return (
-    <VStack px="15px" align="stretch">
-      <Button leftIcon={<Icon as={icon.home} />}>
-        Inicio
-      </Button>
-      <Button leftIcon={<Icon as={icon.events} />}>
-        Mis eventos
-      </Button>
-      <Button leftIcon={<Icon as={icon.profile} />}>
-        Perfil
-      </Button>
+    <VStack spacing={3} px="20px" align="stretch">
+      <MenuButton icon={icon.home} text="Inicio" />
+      <MenuButton icon={icon.events} text="Mis Eventos" />
+      <MenuButton icon={icon.profile} text="Perfil" />
     </VStack>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, VStack } from '@chakra-ui/react'
+import { Box, Flex, VStack } from '@chakra-ui/react'
 
 const Home = () => {
   return (
@@ -7,10 +7,12 @@ const Home = () => {
 
     //   </Box>
     // </Box>
-    <VStack w="80%" spacing={6} overflowY="scroll">
-      <Box w="70%" h="200px" bg="white" pos="sticky"/>
-      <Box w="100%" h="1000px" bg="white"/>
-    </VStack>
+    <Box w="80%">
+      <VStack w="100%" spacing={6}>
+        <Box w="70%" h="200px" bg="white" />
+        <Box w="full" h="1000px" bg="white" />
+      </VStack>
+    </Box>
   )
 }
 

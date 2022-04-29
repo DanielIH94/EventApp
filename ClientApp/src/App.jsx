@@ -1,7 +1,7 @@
 import { Box, Center, HStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
-
 import LateralPanel from './components/Home/LateralPanel';
+
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
         <LateralPanel />
       </Box>
       <Center flex={1} alignItems="stretch">
-        <Outlet/>
+        <Outlet />
       </Center>
     </HStack>
   );

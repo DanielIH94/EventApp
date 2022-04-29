@@ -10,6 +10,8 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 
+import { getUser } from '../service/GraphService';
+
 import msalConfig from '../configs/msalConfig';
 
 const AzureAuthContext = createContext({
@@ -44,12 +46,46 @@ const useProvideAzureAuthContext = () => {
             prompt: 'select_account'
         })
 
+        const user = getUser(authProvider)
+
+        setUser({
+            displayName: user.displayName || '',
+            email: user.mail || user.userPrincipalName || '',
+            timeFormat: user.mailboxSettings?.timeFormat || '',
+            timeZone: user.mailboxSettings?.timeZone || 'UTC'
+        })
+
         displayError('Access token retrieved', result.accessToken)
     }
 
-    const signOut = () => {
-
+    const signOut = async () => {
+        await msal.instance.logoutPopup()
+        setUser(undefined)
     }
+
+    useEffect(() => {
+        const checkUser = async () => {
+            if (!user) {
+                try {
+                    const account = msal.instance.getActiveAccount()
+                    if (account) {
+                        const user = await getUser(authProvider)
+
+                        setUser({
+                            displayName: user.displayName || '',
+                            email: user.mail || user.userPrincipalName || '',
+                            timeFormat: user.mailboxSettings?.timeFormat || 'h:mm a',
+                            timeZone: user.mailboxSettings?.timeZone || 'UTC'
+                        })
+                    }
+                } catch (err) {
+                    displayError(err.message);
+                }
+            }
+        }
+        
+        checkUser()
+    })
 
     return {
         user,
@@ -65,6 +101,7 @@ const useProvideAzureAuthContext = () => {
 
 const AzureAuthContextProvider = ({ children }) => {
     const azureAuth = useProvideAzureAuthContext()
+
     return (
         <AzureAuthContext.Provider value={azureAuth}>
             {children}

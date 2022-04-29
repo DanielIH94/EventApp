@@ -10,7 +10,7 @@ const App = () => {
       <Box py="30px">
         <NavigationMenu />
       </Box>
-      <Center flex={1} alignItems="stretch" bg="red">
+      <Center w="full" alignItems="stretch" overflow="auto">
         <Outlet />
       </Center>
     </HStack>

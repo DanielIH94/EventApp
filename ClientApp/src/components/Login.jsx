@@ -2,8 +2,11 @@ import React from 'react'
 import { Button, Box, Icon, VStack, Center, Text, background } from '@chakra-ui/react'
 import { MdVpnKey } from 'react-icons/md'
 import icon from '../configs/icons'
+import { useAzureAuth } from '../context/AzureAuthContextProvider'
 
 const Login = () => {
+
+  const { signIn } = useAzureAuth()
 
   const hoverButtonStyle = {
     background: 'purple.500',
@@ -16,7 +19,8 @@ const Login = () => {
         <Icon fontSize={100} color='purple.600' as={icon.app_logo.outline}></Icon>
         <Text fontSize={30}>EventNet</Text>
         <Button _hover={hoverButtonStyle}
-          leftIcon={<Icon as={MdVpnKey} />}>Sign in</Button>
+          leftIcon={<Icon as={MdVpnKey} />}
+          onClick={() => signIn()}>Sign in</Button>
       </VStack>
     </Center>
   )

@@ -1,7 +1,9 @@
+import React, { useEffect } from 'react'
 import {
   Button, Center, HStack, Icon, IconButton, Popover, PopoverArrow, PopoverBody,
   PopoverContent, PopoverTrigger, Spacer, Text, VStack,
 } from '@chakra-ui/react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import icon from '../../configs/icons'
 import Avatar from '../common/Avatar'
 
@@ -19,29 +21,55 @@ const Logo = () => {
   )
 }
 
-const MenuButton = ({ icon, text, onClick }) => {
+const MenuButton = ({ isSelected, children, value, icon }) => {
+  const navigate = useNavigate()
+
   return (
     <Button
-      color="gray.600"
+      pointerEvents={isSelected ? "none" : "initial"}
+      color={isSelected ? "white" : "gray.600"}
+      bg={isSelected ? "#2EC0F9" : "gray.100"}
       leftIcon={<Icon as={icon} />}
-      onClick={onClick}
-      _active={{
-        background: "orange",
-        color: "white"
-      }}
+      onClick={navigate.bind(null, value)}
     >
-      {text}
+      {children}
     </Button>
   )
 }
 
-const Menu = () => {
+const MenuButtonControl = ({ children, value }) => {
   return (
     <VStack spacing={3} px="20px" align="stretch">
-      <MenuButton icon={icon.home} text="Inicio" />
-      <MenuButton icon={icon.events} text="Mis Eventos" />
-      <MenuButton icon={icon.profile} text="Perfil" />
+      {
+        children?.map(child => {
+          if (React.isValidElement(child)) {
+            const isSelected = child.props.value == value
+            
+            return React.cloneElement(child, { isSelected });
+          }
+
+          return child
+        })
+      }
     </VStack>
+  )
+}
+
+const Menu = () => {
+  const location = useLocation()
+
+  return (
+    <MenuButtonControl value={location.pathname}>
+      <MenuButton value="/" icon={icon.home}>
+        Inicio
+      </MenuButton>
+      <MenuButton value="/events" icon={icon.events}>
+        Mis eventos
+      </MenuButton>
+      <MenuButton value="/profile" icon={icon.profile}>
+        Pérfil
+      </MenuButton>
+    </MenuButtonControl>
   )
 }
 
@@ -72,7 +100,7 @@ const Settings = () => {
   )
 }
 
-const LateralPanel = () => {
+const NavigationMenu = () => {
   return (
     <VStack
       bg="white"
@@ -91,4 +119,4 @@ const LateralPanel = () => {
   )
 }
 
-export default LateralPanel
+export default NavigationMenu

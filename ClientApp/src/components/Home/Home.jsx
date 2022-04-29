@@ -1,21 +1,16 @@
-import { Box, Center, HStack } from '@chakra-ui/react'
-import LateralPanel from './LateralPanel'
+import { Box, VStack } from '@chakra-ui/react'
 
 const Home = () => {
   return (
-    // <HStack bg="gray.200" w="100vw" h="100vh" align="stretch" px={20} spacing={3}>
-    //   <Box py="30px">
-    //     <LateralPanel />
+    // <Box w="75%">
+    //   <Box boxSize="full" bg="white" shadow="lg">
+
     //   </Box>
-    //   <Center flex={1} alignItems="stretch">
-    //     <Box bg="white" w="75%" shadow="lg">
-
-    //     </Box>
-    //   </Center>
-    // </HStack>
-    <Box bg="white" w="75%" shadow="lg">
-
-    </Box>
+    // </Box>
+    <VStack w="80%" spacing={6} overflowY="scroll">
+      <Box w="70%" h="200px" bg="white" pos="sticky"/>
+      <Box w="100%" h="1000px" bg="white"/>
+    </VStack>
   )
 }
 

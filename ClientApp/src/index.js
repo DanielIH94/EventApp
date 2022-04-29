@@ -2,14 +2,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import App from './App';
+import App from './components/App/App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
 import { Global, css } from '@emotion/react'
 import { ChakraProvider } from "@chakra-ui/react"
-import Home from './components/Home/Home';
 import Login from './components/Login';
+import Home from './components/Home/Home';
+import Events from './components/Events/Events';
 
 import "focus-visible/dist/focus-visible"
 
@@ -30,6 +31,7 @@ ReactDOM.render(
       <Routes>
         <Route path='/' element={<App />}>
           <Route index element={<Home />} />
+          <Route path='events' element={<Events/>} />
         </Route>
         <Route path='login' element={<Login />} />
         <Route path='*' element={<div>error 404 :c</div>}/>

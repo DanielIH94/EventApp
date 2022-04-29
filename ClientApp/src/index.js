@@ -9,31 +9,21 @@ import "focus-visible/dist/focus-visible";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-<<<<<<< HEAD
-import App from './components/App/App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
-import { Global, css } from '@emotion/react'
-import { ChakraProvider } from "@chakra-ui/react"
+import App from './components/App/App';
 import Login from './components/Login';
 import Home from './components/Home/Home';
 import Events from './components/Events/Events';
+
+import msalConfig from './configs/msalConfig';
+import AzureAuthContextProvider from './context/AzureAuthContextProvider';
 
 import "focus-visible/dist/focus-visible"
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
-=======
-
-import App from './App';
-import Home from './components/Home/Home';
-import Login from './components/Login';
-import msalConfig from './configs/msalConfig';
-import AzureAuthContextProvider from './context/AzureAuthContextProvider';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
->>>>>>> 7f4fda7aee230e42648e44270964c50891dd53ef
 
 const GlobalStyles = css`
   .js-focus-visible :focus:not([data-focus-visible-added]) {
@@ -41,9 +31,6 @@ const GlobalStyles = css`
      box-shadow: none;
    }
 `;
-
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
-const rootElement = document.getElementById('root');
 
 const msalInstance = new PublicClientApplication({
   auth: {
@@ -69,21 +56,6 @@ msalInstance.addEventCallback((event) => {
 })
 
 ReactDOM.render(
-<<<<<<< HEAD
-  <ChakraProvider>
-    <Global styles={GlobalStyles} />
-    <BrowserRouter basename={baseUrl}>
-      <Routes>
-        <Route path='/' element={<App />}>
-          <Route index element={<Home />} />
-          <Route path='events' element={<Events/>} />
-        </Route>
-        <Route path='login' element={<Login />} />
-        <Route path='*' element={<div>error 404 :c</div>}/>
-      </Routes>
-    </BrowserRouter>
-  </ChakraProvider>,
-=======
   <MsalProvider instance={msalInstance}>
     <AzureAuthContextProvider>
       <ChakraProvider>
@@ -92,6 +64,7 @@ ReactDOM.render(
           <Routes>
             <Route path='/' element={<App />}>
               <Route index element={<Home />} />
+              <Route path='events' element={<Events/>} />
             </Route>
             <Route path='login' element={<Login />} />
             <Route path='*' element={<div>error 404 :c</div>} />
@@ -100,7 +73,6 @@ ReactDOM.render(
       </ChakraProvider>
     </AzureAuthContextProvider>
   </MsalProvider>,
->>>>>>> 7f4fda7aee230e42648e44270964c50891dd53ef
   rootElement
 );
 

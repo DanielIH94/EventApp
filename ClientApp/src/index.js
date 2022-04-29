@@ -1,14 +1,16 @@
+import React from 'react';
+
 import {
   EventType, PublicClientApplication
 } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
+
 import { ChakraProvider } from "@chakra-ui/react";
 import { css, Global } from '@emotion/react';
-import 'bootstrap/dist/css/bootstrap.css';
-import "focus-visible/dist/focus-visible";
-import React from 'react';
+
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 

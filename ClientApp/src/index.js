@@ -3,10 +3,6 @@ import React from 'react';
 import {
   EventType, PublicClientApplication
 } from '@azure/msal-browser';
-import { MsalProvider } from '@azure/msal-react';
-
-import { ChakraProvider } from "@chakra-ui/react";
-import { css, Global } from '@emotion/react';
 
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -19,8 +15,13 @@ import Login from './components/Login';
 import Home from './components/Home/Home';
 import Events from './components/Events/Events';
 
-import msalConfig from './configs/msalConfig';
+import { css, Global } from '@emotion/react';
+import { ChakraProvider } from "@chakra-ui/react";
+import { MsalProvider } from '@azure/msal-react';
 import AzureAuthContextProvider from './context/AzureAuthContextProvider';
+import SmoothScrollProvider from './context/SmoothScrollContextProvider'
+
+import msalConfig from './configs/msalConfig';
 
 import "focus-visible/dist/focus-visible"
 
@@ -61,17 +62,19 @@ ReactDOM.render(
   <MsalProvider instance={msalInstance}>
     <AzureAuthContextProvider>
       <ChakraProvider>
-        <Global styles={GlobalStyles} />
-        <BrowserRouter basename={baseUrl}>
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route index element={<Home />} />
-              <Route path='events' element={<Events/>} />
-            </Route>
-            <Route path='login' element={<Login />} />
-            <Route path='*' element={<div>error 404 :c</div>} />
-          </Routes>
-        </BrowserRouter>
+        <SmoothScrollProvider>
+          <Global styles={GlobalStyles} />
+          <BrowserRouter basename={baseUrl}>
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route index element={<Home />} />
+                <Route path='events' element={<Events />} />
+              </Route>
+              <Route path='login' element={<Login />} />
+              <Route path='*' element={<div>error 404 :c</div>} />
+            </Routes>
+          </BrowserRouter>
+        </SmoothScrollProvider>
       </ChakraProvider>
     </AzureAuthContextProvider>
   </MsalProvider>,

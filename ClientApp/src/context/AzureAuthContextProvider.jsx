@@ -1,18 +1,12 @@
-import React, {
-    useContext,
-    createContext,
-    useState,
-    MouseEventHandler,
-    useEffect
-} from 'react'
-
-import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { InteractionType } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
-
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
+import React, {
+    createContext, useContext, useEffect, useState
+} from 'react';
+import msalConfig from '../configs/msalConfig';
 import { getUser } from '../service/GraphService';
 
-import msalConfig from '../configs/msalConfig';
 
 const AzureAuthContext = createContext({
     user: undefined,
@@ -83,7 +77,7 @@ const useProvideAzureAuthContext = () => {
                 }
             }
         }
-        
+
         checkUser()
     })
 
@@ -98,10 +92,8 @@ const useProvideAzureAuthContext = () => {
     }
 }
 
-
 const AzureAuthContextProvider = ({ children }) => {
     const azureAuth = useProvideAzureAuthContext()
-
     return (
         <AzureAuthContext.Provider value={azureAuth}>
             {children}

@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import icon from '../../configs/icons'
-import Avatar from '../common/Avatar'
+import Avatar from '../common/UserAvatar'
 
 const Logo = () => {
   return (
@@ -28,8 +28,11 @@ const MenuButton = ({ isSelected, children, value, icon }) => {
     <Button
       pointerEvents={isSelected ? "none" : "initial"}
       color={isSelected ? "white" : "gray.600"}
-      bg={isSelected ? "#2EC0F9" : "gray.100"}
+      bg={isSelected ? "#ED254E" : "gray.100"}
       leftIcon={<Icon as={icon} />}
+      // fontFamily="Montserrat"
+      fontSize="md"
+      fontWeight="normal"
       onClick={navigate.bind(null, value)}
     >
       {children}
@@ -41,11 +44,11 @@ const MenuButtonControl = ({ children, value }) => {
   return (
     <VStack spacing={3} px="20px" align="stretch">
       {
-        children?.map(child => {
+        children?.map((child, i) => {
           if (React.isValidElement(child)) {
             const isSelected = child.props.value == value
             
-            return React.cloneElement(child, { isSelected });
+            return React.cloneElement(child, { isSelected, key: i });
           }
 
           return child
@@ -110,6 +113,8 @@ const NavigationMenu = () => {
       borderRadius="10px"
       align="stretch"
       shadow="lg"
+      // border="1px solid"
+      // borderColor="#ADE25D"
     >
       <Logo />
       <Menu />

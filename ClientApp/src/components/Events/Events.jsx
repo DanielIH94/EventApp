@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, cloneElement, Children } from 'react'
+import PropTypes from 'prop-types'
 import { Box } from '@chakra-ui/react'
 import {
   Calendar,
@@ -11,17 +12,17 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import events from '../../configs/events'
 import * as dates from '../../configs/dates'
 
-const ColoredDateCellWrapper = ({ children }) => {
-  React.cloneElement(React.Children.only(children), {
+const mlocalizer = momentLocalizer(moment)
+
+const ColoredDateCellWrapper = ({ children }) =>
+  cloneElement(Children.only(children), {
     style: {
       backgroundColor: 'lightblue'
     }
   })
-}
 
-const Events = () => {
+const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
 
-  const localizer = momentLocalizer(moment)
 
   const { components, defaultDate, max, views } = useMemo(
     () => ({
@@ -35,7 +36,7 @@ const Events = () => {
 
   return (
     <Box py="20px" w="90%">
-      <Box boxSize="full" shadow="2xl" bg="white" borderRadius="10px">
+      <Box boxSize="full" shadow="2xl" bg="white" borderRadius="10px" p={2}>
         <Calendar
           components={components}
           defaultDate={defaultDate}
@@ -49,6 +50,11 @@ const Events = () => {
       </Box>
     </Box>
   )
+}
+
+Events.prototype = {
+  localizer: PropTypes.instanceOf(DateLocalizer),
+  showDemoLink: PropTypes.bool,
 }
 
 export default Events

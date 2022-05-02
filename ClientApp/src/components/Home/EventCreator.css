@@ -35,3 +35,18 @@
 .react-calendar__tile--active {
   background: #ED254E !important;
 }
+
+.AmazingEmojiPicker-module_AmazingEmojiPicker__mYjjl {
+  position: relative;
+  box-shadow: none;
+  margin: 0;
+}
+
+.AmazingEmojiPicker-module_AmazingEmojiPicker__mYjjl li {
+  user-select: none;
+  padding: 0;
+}
+
+.AmazingEmojiPicker-module_overlay__E-z1Q {
+  display: none;
+}

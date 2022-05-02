@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Box, Center, HStack, Icon, IconButton, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton,
-  PopoverContent, PopoverHeader, PopoverTrigger, Spacer, Text, Textarea, VStack
+  PopoverContent, PopoverHeader, PopoverTrigger, Portal, Spacer, Text, Textarea, VStack
 } from '@chakra-ui/react'
-import Calendar from 'react-calendar';
-import Picker from "emoji-picker-react"
+import Calendar from 'react-calendar'
+import EmojiInput from 'amazing-react-emojipicker'
 
 import UserAvatar from '../common/UserAvatar'
 
-import 'react-calendar/dist/Calendar.css';
-import './EventCreator.css';
+import 'react-calendar/dist/Calendar.css'
+import './EventCreator.css'
 
-import icon from '../../configs/icons';
-import { HiChevronDoubleLeft } from 'react-icons/hi';
+import icon from '../../configs/icons'
 
 const month_table = [
   "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
@@ -71,44 +70,62 @@ const DatePicker = ({ date, onDateChange }) => {
   )
 }
 
-const EmojiPicker = ({ onEmojiSelect }) => {
-  const emojiPicker = useRef(
-    <Picker onEmojiClick={onEmojiSelect} native pickerStyle={{
-      width: "100%",
-      fontSize: "10px"
-    }} />
-  )
+const EmojiPicker = ({ input, onClick }) => {
+  const handleClick = (onClose) => {
+    onClick()
+    onClose()
+  }
 
   return (
-    <Popover placement='left-end'>
-      <PopoverTrigger>
-        <IconButton variant="ghost" size="xs" borderRadius="full"
-          icon={<Icon as={icon.smiley} color="gray.400" fontSize="lg" />}
-        />
-      </PopoverTrigger>
-      <PopoverContent shadow="md">
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverHeader>Inserta un emoji</PopoverHeader>
-        <PopoverBody fontFamily="initial">
-          {emojiPicker.current}
-        </PopoverBody>
-      </PopoverContent>
+    <Popover placement='left-start'>
+      {({ isOpen, onClose }) => (
+        <>
+          <PopoverTrigger>
+            <IconButton variant="ghost" size="xs" borderRadius="full" title='emoji picker'
+              icon={<Icon as={icon.smiley} color="gray.400" fontSize="lg" />}
+            />
+          </PopoverTrigger>
+          <PopoverContent width="fit-content" shadow="md">
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader fontSize="sm">Inserta un emoji</PopoverHeader>
+            <PopoverBody fontFamily="initial" pos="relative">
+              <Box onClick={handleClick}>
+                <EmojiInput
+                  ref={input}
+                  visibility={isOpen}
+                />
+              </Box>
+            </PopoverBody>
+          </PopoverContent>
+        </>
+      )}
     </Popover>
   )
 }
 
 const EventCreator = () => { // #F7B32B
+  const maxLength = 150
+
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [descLength, setDescLength] = useState(0)
-  const textAreaRef = useRef()
+  const [descriptionLength, setDescriptionLength] = useState(0)
+  const [description, setDescription] = useState("")
 
-  const handleEmojiSelect = (event, { emoji }) => textAreaRef.current.value += emoji
-  const handleDescChange = ({ target: { value } }) => setDescLength(descLength + value.length)
+  const descriptionInput = useRef()
 
-  useEffect(() => {
-    console.log(":v")
-  }, [])
+  const updateDescription = value => {
+    setDescription(value)
+    setDescriptionLength(value.length)
+  }
+
+  const handleEmojiSelect = () => {
+    const newDescription = descriptionInput.current.value
+    updateDescription(newDescription)
+  }
+
+  const handleDescChange = ({ target: { value } }) => {
+    updateDescription(value)
+  }
 
   return (
     <Box w="100%" bg="gray.50" py="20px"
@@ -131,12 +148,13 @@ const EventCreator = () => { // #F7B32B
             <Text color="gray.600" fontWeight="semibold" fontSize="md" py="8px">
               {selectedDate.toString()}
             </Text>
-            <HStack>
+            <HStack w="full">
               <Input bg="gray.50" placeholder='nombre del evento' borderRadius="15px" />
             </HStack>
             <VStack w="full" align="stretch" spacing={0}>
-              <Textarea ref={textAreaRef} bg="gray.50" placeholder='descripción del evento'
-                flex={1} borderRadius="15px 15px 0 0" resize="none" onChange={handleDescChange}
+              <Textarea ref={descriptionInput} value={description} bg="gray.50"
+                placeholder='descripción del evento' h="110px" borderRadius="15px 15px 0 0"
+                resize="none" onChange={handleDescChange}
               />
               <HStack borderRadius="0 0 15px 15px" border="solid 1px"
                 borderColor="gray.100" borderTop="none" p="3px"
@@ -144,9 +162,9 @@ const EventCreator = () => { // #F7B32B
                 <Spacer />
                 <HStack>
                   <Text fontSize="xs" color="gray.400">
-                    {descLength} / 200
+                    {descriptionLength} / {maxLength}
                   </Text>
-                  <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+                  <EmojiPicker input={descriptionInput} onClick={handleEmojiSelect} />
                 </HStack>
               </HStack>
             </VStack>

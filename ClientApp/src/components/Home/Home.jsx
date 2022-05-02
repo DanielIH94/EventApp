@@ -27,7 +27,7 @@ const Home = () => {
   return (
     <Box mt="10px" ref={scrollRef} w="80%" px="15px" css={{
       "& .scrollbar-track .scrollbar-thumb": {
-        background: "purple",
+        // background: "purple",
         opacity: 0.2
       }
     }}>

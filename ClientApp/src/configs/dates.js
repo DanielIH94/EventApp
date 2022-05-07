@@ -170,3 +170,8 @@ export function yesterday() {
 export function tomorrow() {
     return dates.add(dates.startOf(new Date(), 'day'), 1, 'day')
 }
+
+export const month_table = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+  "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]

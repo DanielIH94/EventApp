@@ -4,6 +4,8 @@ import { BsFillCalendar3RangeFill, BsFillCalendarDateFill, BsCalendarDate } from
 import { RiUser5Fill } from "react-icons/ri"
 import { HiHome } from "react-icons/hi"
 import { AiOutlineSmile } from "react-icons/ai"
+import { FaLongArrowAltRight, FaRegCommentDots } from "react-icons/fa"
+import { BiChevronDown, BiChevronUp } from "react-icons/bi"
 
 const icon = {
   more_info: HiOutlineDotsVertical,
@@ -16,7 +18,11 @@ const icon = {
   home: HiHome,
   events: BsFillCalendar3RangeFill,
   profile: RiUser3Fill,
-  smiley: AiOutlineSmile
+  smiley: AiOutlineSmile,
+  right_arrow: FaLongArrowAltRight,
+  expand: BiChevronDown,
+  hide: BiChevronUp,
+  comments: FaRegCommentDots
 }
 
 export default icon

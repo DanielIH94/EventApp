@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import icon from '../../configs/icons'
-import Avatar from '../common/UserAvatar'
+import LoggedUserCard from '../common/LoggedUserCard'
 
 const Logo = () => {
   return (
@@ -28,11 +28,11 @@ const MenuButton = ({ isSelected, children, value, icon }) => {
     <Button
       pointerEvents={isSelected ? "none" : "initial"}
       color={isSelected ? "white" : "gray.600"}
-      bg={isSelected ? "#ED254E" : "gray.100"}
+      bg={isSelected ? "blue.400" : "gray.100"}
       leftIcon={<Icon as={icon} />}
       // fontFamily="Montserrat"
       fontSize="md"
-      fontWeight="normal"
+      // fontWeight="normal"
       onClick={navigate.bind(null, value)}
     >
       {children}
@@ -79,7 +79,7 @@ const Menu = () => {
 const Settings = () => {
   return (
     <HStack py="15px" px="25px" align="center">
-      <Avatar />
+      <LoggedUserCard firstOnly size={50}/>
       <Spacer />
       <Popover placement='right'>
         <PopoverTrigger>
@@ -91,7 +91,7 @@ const Settings = () => {
           <PopoverArrow />
           <PopoverBody p="5px" color="gray.700">
             <Button>
-              <HStack>
+              <HStack color="blue.800">
                 <Icon as={icon.logout} fontSize="26px" />
                 <Text>Cerrar sesión</Text>
               </HStack>
@@ -114,7 +114,7 @@ const NavigationMenu = () => {
       align="stretch"
       shadow="lg"
       // border="1px solid"
-      // borderColor="#ADE25D"
+      // borderColor="blue.200"
     >
       <Logo />
       <Menu />

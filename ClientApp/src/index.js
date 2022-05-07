@@ -14,6 +14,7 @@ import App from './components/App/App';
 import Login from './components/Login';
 import Home from './components/Home/Home';
 import Events from './components/Events/Events';
+import Profile from './components/Profile/Profile';
 
 import { css, Global } from '@emotion/react';
 import { ChakraProvider } from "@chakra-ui/react";
@@ -24,6 +25,7 @@ import SmoothScrollProvider from './context/SmoothScrollContextProvider'
 import msalConfig from './configs/msalConfig';
 
 import "focus-visible/dist/focus-visible"
+import "./index.css"
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -69,6 +71,7 @@ ReactDOM.render(
               <Route path='/' element={<App />}>
                 <Route index element={<Home />} />
                 <Route path='events' element={<Events />} />
+                <Route path='profile' element={<Profile />} />
               </Route>
               <Route path='login' element={<Login />} />
               <Route path='*' element={<div>error 404 :c</div>} />

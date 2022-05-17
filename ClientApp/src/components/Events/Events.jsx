@@ -152,9 +152,9 @@ const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
 
   const { loading, error, events } = useGetEvents(authProvider, 'UTC')
   return (
-    <Box py="20px" w="90%">
-      <Box boxSize="full" shadow="2xl" bg="white" borderRadius="10px" p={2}>
-        {
+    <Center boxSize="full" py="20px">
+      <Box boxSize="full" shadow="md" bg="white" borderRadius="10px" p={2}>
+      {
           loading ?
             <Text>cargando eventos...</Text> :
             <Calendar
@@ -177,7 +177,7 @@ const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
             />
         }
       </Box>
-    </Box>
+    </Center>
   )
 }
 

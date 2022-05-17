@@ -1,19 +1,20 @@
-import { useEffect, useRef } from 'react';
-import { Box, Center, HStack } from '@chakra-ui/react';
+import { Box, Center, Flex, HStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import NavigationMenu from './NavMenu';
 
 const App = () => {
   return (
-    <HStack bg="gray.200" w="100vw" h="100vh" align="stretch" px={20} spacing={3}>
-      <Box py="30px">
-        <NavigationMenu />
-      </Box>
-      <Center flex={1} alignItems="stretch">
-        <Outlet />
-      </Center>
-    </HStack>
+    <Center w="100vw" h="100vh" bg="gray.200" overflow="hidden">
+      <HStack w="80%" h="full" align="stretch" spacing={10}>
+        <Box py="20px">
+          <NavigationMenu />
+        </Box>
+        <Flex flex={1} h="full" overflowY="auto" align="start">
+          <Outlet />
+        </Flex  >
+      </HStack>
+    </Center>
   );
 }
 

@@ -14,17 +14,31 @@ import App from './components/App/App';
 import Login from './components/Login';
 import Home from './components/Home/Home';
 import Events from './components/Events/Events';
+import Profile from './components/Profile/Profile';
+
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+  split
+} from "@apollo/client"
+//import { GraphQLWsLink } from "@apollo/client/link/subscriptions"
+import { WebSocketLink } from '@apollo/client/link/ws'
+//import { createClient } from "graphql-ws"
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { getMainDefinition } from '@apollo/client/utilities'
 
 import { css, Global } from '@emotion/react';
 import { ChakraProvider } from "@chakra-ui/react";
 import { MsalProvider } from '@azure/msal-react';
 import AzureAuthContextProvider from './context/AzureAuthContextProvider';
-import SmoothScrollProvider from './context/SmoothScrollContextProvider'
 
 import msalConfig from './configs/msalConfig';
 
 import "focus-visible/dist/focus-visible"
 import GraphContextProvider from './context/GraphContextProvider';
+import "./index.css"
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -59,6 +73,35 @@ msalInstance.addEventCallback((event) => {
   }
 })
 
+const httpLink = new HttpLink({
+  uri: 'https://localhost:7255/graphql/'
+})
+
+// const wsLink = new GraphQLWsLink(createClient({
+//   url: 'wss://localhost:7255/graphql/'
+// }))
+
+const wsLink = new WebSocketLink(
+  new SubscriptionClient('wss://localhost:7255/graphql/')
+)
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+)
+
+const client = new ApolloClient({
+  link: splitLink,
+  cache: new InMemoryCache()
+})
+
 ReactDOM.render(
   <MsalProvider instance={msalInstance}>
     <AzureAuthContextProvider>
@@ -79,6 +122,22 @@ ReactDOM.render(
           </SmoothScrollProvider>
         </ChakraProvider>
       </GraphContextProvider>
+      <ApolloProvider client={client}>
+        <ChakraProvider>
+          <Global styles={GlobalStyles} />
+          <BrowserRouter basename={baseUrl}>
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route index element={<Home />} />
+                <Route path='events' element={<Events />} />
+                <Route path='profile' element={<Profile />} />
+              </Route>
+              <Route path='login' element={<Login />} />
+              <Route path='*' element={<div>error 404 :c</div>} />
+            </Routes>
+          </BrowserRouter>
+        </ChakraProvider>
+      </ApolloProvider>
     </AzureAuthContextProvider>
   </MsalProvider>,
   rootElement

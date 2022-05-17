@@ -14,7 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GraphQL.Server.UI.Playground" Version="6.0.0" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="12.8.2" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="12.8.2" />
+    <PackageReference Include="HotChocolate.Subscriptions.Redis" Version="12.8.2" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+    <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
   </ItemGroup>
 
   <ItemGroup>

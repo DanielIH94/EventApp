@@ -1,4 +1,4 @@
-import { Box, Center, HStack } from '@chakra-ui/react';
+import { Box, Center, Flex, HStack } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import NavigationMenu from './NavMenu';
@@ -10,7 +10,9 @@ const App = () => {
         <Box py="20px">
           <NavigationMenu />
         </Box>
-        <Outlet />
+        <Flex flex={1} h="full" overflowY="auto" align="start">
+          <Outlet />
+        </Flex  >
       </HStack>
     </Center>
   );

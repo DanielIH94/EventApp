@@ -1,4 +1,4 @@
-import { Box, VStack } from '@chakra-ui/react'
+import { Box, Center, VStack } from '@chakra-ui/react'
 import EventCreator from './EventCreator'
 import PostedEvent from './PostedEvent'
 
@@ -34,8 +34,8 @@ const posts = [
 
 const Home = () => {
   return (
-    <Box mt="10px" w="80%" px="15px" pt="10px" overflowY="auto">
-      <VStack w="100%" spacing={0}>
+    <Center>
+      <VStack mt="10px" w="93%" spacing={0}>
         <Box w="100%" bg="gray.50" p="20px" borderRadius="10px 10px 0 0"
           borderBottom="solid 1px" borderColor="gray.300"
         >
@@ -49,7 +49,7 @@ const Home = () => {
           </VStack>
         </Box>
       </VStack>
-    </Box>
+    </Center>
   )
 }
 

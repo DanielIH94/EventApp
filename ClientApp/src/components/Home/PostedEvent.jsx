@@ -7,6 +7,7 @@ import { useState } from 'react'
 import UserCard from '../common/UserCard'
 import UserAvatar from '../common/UserAvatar'
 import LoggedUserAvatar from '../common/LoggedUserAvatar'
+import { motion } from 'framer-motion'
 
 const comments = [
   {
@@ -66,34 +67,41 @@ const Comment = ({ owner, text }) => {
 
 const MakeComment = ({ onFinish }) => {
   // const { status, uploadComment } = useMakeComment()
+  
   const [loading, setLoading] = useBoolean(false)
+  const [text, setText] = useState("")
   const handleAccept = () => {
     setLoading.on()
-    setTimeout(setLoading.off, 1000)
+    setTimeout(() => {
+      setLoading.off()
+      setText("")
+    }, 1000)
   }
+  const handleChange = ({ target: { value } }) => setText(value)
 
   return (
     <HStack pos="relative">
       <LoggedUserAvatar />
       <InputGroup borderRadius="full" overflow="hidden">
-        <Input borderRadius="full" bg="white" placeholder='Escribe un comentario...'/>
+        <Input
+          borderRadius="full" bg="white" placeholder='Escribe un comentario...'
+          value={text} onChange={handleChange}
+        />
         <InputRightAddon bg="purple.500" borderColor="purple.500">
-          <Button size="sm" colorScheme="purple"
-            onClick={handleAccept}
+          <Button
+            size="sm" colorScheme="purple"
+            onClick={handleAccept} isDisabled={!text.length}
           >
             comentar
           </Button>
         </InputRightAddon>
       </InputGroup>
-      {
-        loading && (
-          <Center borderRadius="full" boxSize="full" pos="absolute"
-            m="0 !important" bg="whiteAlpha.700"
-          >
-            <Spinner color="blue.300" />
-          </Center>
-        )
-      }
+      <Center
+        as={motion.div} animate={{ opacity: loading ? 1 : 0 }} pointerEvents={loading ? 'initial' : 'none'}
+        borderRadius="full" boxSize="full" pos="absolute" m="0 !important" bg="whiteAlpha.700"
+      >
+        <Spinner color="blue.300" />
+      </Center>
     </HStack>
   )
 }

@@ -2,7 +2,7 @@ import React, {
   useMemo, cloneElement, Children, useState, isValidElement
 } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Button, ButtonGroup, HStack, Icon, IconButton, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Center, HStack, Icon, IconButton, Text } from '@chakra-ui/react'
 import {
   Calendar,
   Views,
@@ -118,8 +118,8 @@ const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
   }), [])
 
   return (
-    <Box py="20px" w="90%">
-      <Box boxSize="full" shadow="2xl" bg="white" borderRadius="10px" p={2}>
+    <Center boxSize="full" py="20px">
+      <Box boxSize="full" shadow="md" bg="white" borderRadius="10px" p={2}>
         <Calendar
           culture='es'
           components={components}
@@ -132,7 +132,7 @@ const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
           views={views}
         />
       </Box>
-    </Box>
+    </Center>
   )
 }
 

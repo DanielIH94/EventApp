@@ -202,8 +202,8 @@ const EventCreator = () => { // #F7B32B
         borderRadius="10px" py="20px" px="50px" bg="white"
       >
         <Center>
-          <Text fontSize="lg" fontWeight="semibold">
-            Crear evento
+          <Text fontSize="md" fontWeight="semibold" color="blue.700">
+            CREAR EVENTO
           </Text>
         </Center>
         <VStack>

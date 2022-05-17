@@ -1,8 +1,8 @@
 import React, {
-  useMemo, cloneElement, Children, useState, isValidElement
+  useMemo, cloneElement, Children, useState, isValidElement, useEffect
 } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Button, ButtonGroup, HStack, Icon, IconButton, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Heading, HStack, Icon, IconButton, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, Text, VStack } from '@chakra-ui/react'
 import {
   Calendar,
   Views,
@@ -12,10 +12,16 @@ import {
 } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import events from '../../configs/events'
 import * as dates from '../../configs/dates'
 import './style.css'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+import { MdToday } from 'react-icons/md'
+import { BsClock } from 'react-icons/bs'
+import { useAzureAuth } from '../../context/AzureAuthContextProvider'
+import { getTimezone, getUser, getUserMonthCalendar } from '../../service/GraphService'
+import { findIana } from 'windows-iana'
+import { useGraph } from '../../context/GraphContextProvider'
+import useGetEvents from '../../service/useGetEvents'
 
 const mlocalizer = momentLocalizer(moment)
 
@@ -23,7 +29,7 @@ const ColoredDateCellWrapper = ({ children }) => {
   return (
     cloneElement(Children.only(children), {
       style: {
-        backgroundColor: 'lightblue'
+        backgroundColor: '#f7f5fa'
       }
     })
   )
@@ -74,6 +80,13 @@ const Toolbar = (props) => {
   return (
     <HStack w='full' justify='space-between' pb={2}>
       <ButtonGroup isAttached>
+        <Button
+          leftIcon={<Icon as={MdToday} />}
+          bg='purple.500'
+          color='white'
+          _hover={{ backgroundColor: 'purple.700' }}
+          onClick={() => onNavigate(Navigate.TODAY)}>{messages.today}
+        </Button>
         <IconButton
           bg='purple.500'
           color='white'
@@ -86,15 +99,9 @@ const Toolbar = (props) => {
           icon={<Icon as={AiOutlineRight} />}
           _hover={{ backgroundColor: 'purple.700' }}
           onClick={() => onNavigate(Navigate.NEXT)} />
-        <Button
-          bg='purple.500'
-          color='white'
-          _hover={{ backgroundColor: 'purple.700' }}
-          onClick={() => onNavigate(Navigate.TODAY)}>{messages.today}
-        </Button>
       </ButtonGroup>
 
-      <Text className="rbc-toolbar-label">{label}</Text>
+      <Text fontWeight='bold'>{label}</Text>
 
       <ViewControl value={view}>
         <ViewButton value={Views.MONTH} onClick={() => onView(Views.MONTH)}>{messages.month}</ViewButton>
@@ -106,10 +113,36 @@ const Toolbar = (props) => {
   )
 }
 
+const Event = (event) => {
+  return (
+    <Popover placement='auto'>
+      <PopoverTrigger>
+        <Box>{event.title}</Box>
+      </PopoverTrigger>
+      <PopoverContent w='fit-content'>
+        <PopoverArrow />
+        <PopoverBody shadow='md'>
+          <VStack color='black' align='start'>
+            <Heading color='purple.700' pl='20px'>{event.title}</Heading>
+            <HStack justifyItems='center'>
+              <Icon as={BsClock} />
+              <Text>
+                {`${moment(event.slotStart).format('DD/MM/YYYY')} a ${moment(event.slotEnd).format('DD/MM/YYYY')}`}
+              </Text>
+            </HStack>
+          </VStack>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
 
+  const { authProvider } = useAzureAuth()
   const { components, defaultDate, max, views } = useMemo(() => ({
     components: {
+      event: Event,
       timeSlotWrapper: ColoredDateCellWrapper,
       toolbar: Toolbar
     },
@@ -117,20 +150,32 @@ const Events = ({ localizer = mlocalizer, showDemoLink = true, ...props }) => {
     max: dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours')
   }), [])
 
+  const { loading, error, events } = useGetEvents(authProvider, 'UTC')
   return (
     <Box py="20px" w="90%">
       <Box boxSize="full" shadow="2xl" bg="white" borderRadius="10px" p={2}>
-        <Calendar
-          culture='es'
-          components={components}
-          defaultDate={defaultDate}
-          events={events}
-          localizer={localizer}
-          max={max}
-          showMultiDayTimes
-          step={60}
-          views={views}
-        />
+        {
+          loading ?
+            <Text>cargando eventos...</Text> :
+            <Calendar
+              culture='es'
+              components={components}
+              defaultDate={defaultDate}
+              events={events}
+              localizer={localizer}
+              max={max}
+              showMultiDayTimes
+              step={60}
+              views={views}
+              messages={{
+                month: 'mes',
+                week: 'semana',
+                day: 'dia',
+                agenda: 'agenda',
+                today: 'hoy'
+              }}
+            />
+        }
       </Box>
     </Box>
   )

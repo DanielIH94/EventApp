@@ -1,5 +1,5 @@
-import { Client } from '@microsoft/microsoft-graph-client';
-import { startOfWeek, endOfWeek } from 'date-fns'
+import { Client, PageIterator } from '@microsoft/microsoft-graph-client';
+import { startOfMonth, endOfMonth } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
 
 let graphClient = undefined
@@ -21,16 +21,15 @@ export const getUser = async (authProvider) => {
         .api('/me')
         .select('displayName,mail,mailboxSettings,userPrincipalName')
         .get()
-
     return user
 }
 
-export const getUSerWeekCalendar = async (authProvider, timeZone) => {
+export const getUserMonthCalendar = async (authProvider, timeZone) => {
     ensureClient(authProvider)
 
     const now = new Date()
-    const startDateTime = zonedTimeToUtc(startOfWeek(now), timeZone).toISOString()
-    const endDateTime = zonedTimeToUtc(endOfWeek(now), timeZone).toISOString()
+    const startDateTime = zonedTimeToUtc(startOfMonth(now), timeZone).toISOString()
+    const endDateTime = zonedTimeToUtc(endOfMonth(now), timeZone).toISOString()
 
     var response = await graphClient
         .api('me/calendarview')
@@ -41,11 +40,21 @@ export const getUSerWeekCalendar = async (authProvider, timeZone) => {
         .top(25)
         .get()
 
-    if(response["@odata.nextLink"]){
+    if (response["@odata.nextLink"]) {
         var events = []
 
         var options = {
-            headers: {'Prefer':`outlook.timezone="${timeZone}"`}
+            headers: { 'Prefer': `outlook.timezone="${timeZone}"` }
         }
+
+        var pageIterador = new PageIterator(graphClient, response, event => {
+            events.push(event)
+            return true
+        }, options)
+
+        await pageIterador.iterate()
+        return events
+    } else {
+        return response.value
     }
 }

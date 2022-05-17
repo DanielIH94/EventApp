@@ -24,6 +24,7 @@ import SmoothScrollProvider from './context/SmoothScrollContextProvider'
 import msalConfig from './configs/msalConfig';
 
 import "focus-visible/dist/focus-visible"
+import GraphContextProvider from './context/GraphContextProvider';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -61,21 +62,23 @@ msalInstance.addEventCallback((event) => {
 ReactDOM.render(
   <MsalProvider instance={msalInstance}>
     <AzureAuthContextProvider>
-      <ChakraProvider>
-        <SmoothScrollProvider>
-          <Global styles={GlobalStyles} />
-          <BrowserRouter basename={baseUrl}>
-            <Routes>
-              <Route path='/' element={<App />}>
-                <Route index element={<Home />} />
-                <Route path='events' element={<Events />} />
-              </Route>
-              <Route path='login' element={<Login />} />
-              <Route path='*' element={<div>error 404 :c</div>} />
-            </Routes>
-          </BrowserRouter>
-        </SmoothScrollProvider>
-      </ChakraProvider>
+      <GraphContextProvider>
+        <ChakraProvider>
+          <SmoothScrollProvider>
+            <Global styles={GlobalStyles} />
+            <BrowserRouter basename={baseUrl}>
+              <Routes>
+                <Route path='/' element={<App />}>
+                  <Route index element={<Home />} />
+                  <Route path='events' element={<Events />} />
+                </Route>
+                <Route path='login' element={<Login />} />
+                <Route path='*' element={<div>error 404 :c</div>} />
+              </Routes>
+            </BrowserRouter>
+          </SmoothScrollProvider>
+        </ChakraProvider>
+      </GraphContextProvider>
     </AzureAuthContextProvider>
   </MsalProvider>,
   rootElement

@@ -221,7 +221,7 @@ const EventCreator = () => { // #F7B32B
           </HStack>
           <InputControl toggle={setIsPublicable} />
           <HStack w="full">
-            <LoggedUserCard />
+            <LoggedUserCard size={45}/>
             <Spacer />
             <Button size="md" colorScheme="purple" borderRadius="15px" isDisabled={!isPublicable}>
               publicar

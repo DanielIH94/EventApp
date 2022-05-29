@@ -2,7 +2,7 @@ import React, {
   useMemo, cloneElement, Children, useState, isValidElement, useEffect
 } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Button, ButtonGroup, Heading, HStack, Icon, IconButton, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Center, Heading, HStack, Icon, IconButton, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, Text, VStack } from '@chakra-ui/react'
 import {
   Calendar,
   Views,

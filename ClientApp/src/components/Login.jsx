@@ -5,17 +5,32 @@ import icon from '../configs/icons'
 import { useAzureAuth } from '../context/AzureAuthContextProvider'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
 
+const hoverButtonStyle = {
+  background: 'purple.500',
+  color: 'white'
+}
+
+const SignInButton = () => {
+  const { signIn } = useAzureAuth()
+
+  return (
+    <Button _hover={hoverButtonStyle}
+      leftIcon={<Icon as={MdVpnKey} />}
+      onClick={() => signIn()}>Sign in</Button>
+  )
+}
+
+const SignOutButton = () => {
+  const { signOut } = useAzureAuth()
+
+  return (
+    <Button _hover={hoverButtonStyle}
+      leftIcon={<Icon as={MdVpnKey} />}
+      onClick={() => signOut()}>Sign out</Button>
+  )
+}
+
 const Login = () => {
-
-  const { user, signIn, signOut } = useAzureAuth()
-
-  const hoverButtonStyle = {
-    background: 'purple.500',
-    color: 'white'
-  }
-
-  console.log(user);
-
   return (
     <Center w='100vw' h='100vh' bg='gray.200'>
       <VStack px='150px' py='100px' borderRadius='10px' shadow='md' bg='white'>
@@ -23,15 +38,11 @@ const Login = () => {
         <Text fontSize={30}>EventNet</Text>
 
         <AuthenticatedTemplate>
-          <Button _hover={hoverButtonStyle}
-            leftIcon={<Icon as={MdVpnKey} />}
-            onClick={() => signOut()}>Sign out</Button>
+          <SignOutButton />
         </AuthenticatedTemplate>
 
         <UnauthenticatedTemplate>
-          <Button _hover={hoverButtonStyle}
-            leftIcon={<Icon as={MdVpnKey} />}
-            onClick={() => signIn()}>Sign in</Button>
+          <SignInButton />
         </UnauthenticatedTemplate>
 
       </VStack>

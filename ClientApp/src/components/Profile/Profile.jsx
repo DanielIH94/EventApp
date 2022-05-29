@@ -5,7 +5,8 @@ import icon from '../../configs/icons'
 import UserAvatar from '../common/UserAvatar'
 import { AnimatePresence, AnimateSharedLayout, motion, Reorder } from 'framer-motion'
 import update from 'immutability-helper'
-import { gql, useQuery, useSubscription } from '@apollo/client'
+import { gql, useLazyQuery, useQuery, useSubscription } from '@apollo/client'
+import { useMsal } from '@azure/msal-react'
 
 const friends_dummy = [
   {
@@ -162,26 +163,34 @@ const Friends = () => {
 
 
 const Profile = () => {
-  const [test, setTest] = useBoolean(false)
-  const { data, error } = useSubscription(gql`
-  subscription {
-    bookAdded {
-      title
-      author {
-        name
-      }
+  // const [test, setTest] = useBoolean(false)
+  // const { data, error } = useSubscription(gql`
+  // subscription {
+  //   bookAdded {
+  //     title
+  //     author {
+  //       name
+  //     }
+  //   }
+  // }
+  // `)
+
+  const { inProgress } = useMsal()
+  const [getMe, { data, error, loading }] = useLazyQuery(gql`
+    query {
+      me
     }
-  }
-  `)
-  const { data: bookData } = useQuery(gql`
-  query {
-    book {
-      title
-    }
-  }
   `)
 
-  console.log(bookData)
+  console.log(error)
+
+  if (!loading)
+    console.log(data)
+
+  useEffect(() => {
+    if (inProgress === "none")
+      getMe()
+  }, [inProgress])
 
   return (
     <Center p="10px" w="full">
@@ -189,7 +198,6 @@ const Profile = () => {
         <ProfileCard />
         <Search />
         <Friends />
-        <Button onClick={setTest.toggle}/>
       </VStack >
     </Center >
   )

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EventApp.Database
+namespace EventApp.Models
 {
   public enum InvitationStatus
   {
@@ -11,13 +11,14 @@ namespace EventApp.Database
 
   public sealed class Invitation
   {
+    [GraphQLIgnore]
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int id { get; set; }
     [GraphQLIgnore]
     [Required]
     [ForeignKey(nameof(Invitation.participant))]
-    public int partId { get; set; }
+    public string partId { get; set; }
     public User participant { get; set; }
     [GraphQLIgnore]
     [Required]
@@ -29,7 +30,7 @@ namespace EventApp.Database
 
   public sealed class InvitationInput
   {
-    public int partId { get; set; }
+    public string partId { get; set; }
     public int eventId { get; set; }
     public InvitationStatus? status { get; set; }
   }

@@ -6,6 +6,8 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom'
 import icon from '../../configs/icons'
 import LoggedUserCard from '../common/LoggedUserCard'
+import { useAzureAuth } from '../../context/AzureAuthContextProvider'
+import { useApolloClient } from '@apollo/client'
 
 const Logo = () => {
   return (
@@ -77,6 +79,14 @@ const Menu = () => {
 }
 
 const Settings = () => {
+  const { signOut } = useAzureAuth()
+  // const apolloClient = useApolloClient()
+
+  const handleLogout = () => {
+    // apolloClient.resetStore()
+    signOut()
+  }
+
   return (
     <HStack py="15px" px="25px" align="center">
       <LoggedUserCard firstOnly size={50}/>
@@ -90,7 +100,7 @@ const Settings = () => {
         <PopoverContent w="fit-content">
           <PopoverArrow />
           <PopoverBody p="5px" color="gray.700">
-            <Button>
+            <Button onClick={handleLogout}>
               <HStack color="blue.800">
                 <Icon as={icon.logout} fontSize="26px" />
                 <Text>Cerrar sesión</Text>

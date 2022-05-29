@@ -1,21 +1,52 @@
+using System.Security.Claims;
 using EventApp.Database;
+using EventApp.Models;
+using EventApp.Repository;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace EventApp.GraphQL
 {
+  [Authorize(Roles = new[] { "Api.ReadWrite" })]
   public class Query
   {
-    [UseSingleOrDefault]
-    [UseProjection]
-    public IQueryable<User> GetUser(int userId, [Service] Context db)
+    public bool GetMe(ClaimsPrincipal claims)
     {
-      return from user in db.Users where user.id == userId select user;
+      var userId = claims.FindFirstValue(ClaimTypes.NameIdentifier);
+
+      Console.WriteLine(ClaimTypes.NameIdentifier);
+
+      return true;
     }
 
-    [UseSingleOrDefault]
     [UseProjection]
-    public IQueryable<Event> GetEvent(int eventId, [Service] Context db)
+    public IEnumerable<User> GetAllUsers([Service] IRepositoryWrapper repo, [Service] Context db)
     {
-      return from post in db.Events where post.id == eventId select post;
+      return repo.User.GetAll();
     }
+
+    [UseProjection]
+    public IQueryable<User> GetUser(string userName, [Service] IRepositoryWrapper repo)
+    {
+      return repo.User.GetUser(userName);
+    }
+
+    [UseProjection]
+    public IQueryable<Event> GetUserFeed(string userName, [Service] IRepositoryWrapper repo)
+    {
+      return repo.User.GetFeed(userName);
+    }
+
+    [UseProjection]
+    public IQueryable<User> GetUserFriends(string userName, [Service] IRepositoryWrapper repo)
+    {
+      return repo.User.GetFriends(userName);
+    }
+
+    // [UseSingleOrDefault]
+    // [UseProjection]
+    // public IQueryable<Event> GetEvent(int eventId, [Service] Context db, [Service] IRepositoryWrapper repo)
+    // {
+    //   return from post in db.Events where post.id == eventId select post;      
+    // }
   }
 }

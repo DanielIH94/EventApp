@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EventApp.Database
+namespace EventApp.Models
 {
   public sealed class Event
   {
+    [GraphQLIgnore]
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int id { get; set; }
@@ -15,7 +16,7 @@ namespace EventApp.Database
     public User user { get; set; }
     public string title { get; set; }
     public string description { get; set; }
-    public int date { get; set; }
+    public long date { get; set; }
     public ICollection<Comment> comments { get; set; }
   }
 
@@ -24,6 +25,6 @@ namespace EventApp.Database
     public string userId { get; set; }
     public string title { get; set; }
     public string description { get; set; }
-    public int date { get; set; }
+    public long date { get; set; }
   }
 }

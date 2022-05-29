@@ -1,4 +1,5 @@
 using EventApp.Database;
+using EventApp.Models;
 
 namespace EventApp.GraphQL
 {

@@ -1,5 +1,6 @@
 import { Box, Center, Flex, HStack } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAzureAuth } from '../../context/AzureAuthContextProvider';
 
 import NavigationMenu from './NavMenu';
 
